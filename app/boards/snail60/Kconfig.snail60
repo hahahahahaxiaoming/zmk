@@ -1,0 +1,9 @@
+# Copyright (c) 2021 Nick Winans
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_SNAIL60
+    select SOC_NRF52840_QIAA
+    select SOC_DCDC_NRF52X
+    imply RETAINED_MEM
+    imply RETENTION
+    imply RETENTION_BOOT_MODE

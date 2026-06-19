@@ -1,0 +1,13 @@
+file_format: "1"
+id: snail60
+name: snail60
+type: board
+arch: arm
+features:
+  - keys
+  - backlight
+  - studio
+outputs:
+  - usb
+  - ble
+url: https://zmk.dev/
