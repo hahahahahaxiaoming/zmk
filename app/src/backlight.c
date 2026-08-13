@@ -163,9 +163,24 @@ static int backlight_auto_state(bool *prev_state, bool new_state) {
 static int backlight_event_listener(const zmk_event_t *eh) {
 
 #if IS_ENABLED(CONFIG_ZMK_BACKLIGHT_AUTO_OFF_IDLE)
+    static bool idle_prev_state = false;
+
     if (as_zmk_activity_state_changed(eh)) {
-        static bool prev_state = false;
-        return backlight_auto_state(&prev_state, zmk_activity_get_state() == ZMK_ACTIVITY_ACTIVE);
+#if IS_ENABLED(CONFIG_ZMK_BACKLIGHT_IDLE_OFF_BATTERY_ONLY)
+        if (zmk_usb_is_powered()) {
+            return backlight_auto_state(&idle_prev_state, true);
+        }
+#endif
+        return backlight_auto_state(&idle_prev_state,
+                                    zmk_activity_get_state() == ZMK_ACTIVITY_ACTIVE);
+    }
+#endif
+
+#if IS_ENABLED(CONFIG_ZMK_BACKLIGHT_IDLE_OFF_BATTERY_ONLY)
+    if (as_zmk_usb_conn_state_changed(eh)) {
+        return backlight_auto_state(
+            &idle_prev_state,
+            zmk_usb_is_powered() || zmk_activity_get_state() == ZMK_ACTIVITY_ACTIVE);
     }
 #endif
 
@@ -185,6 +200,11 @@ ZMK_LISTENER(backlight, backlight_event_listener);
 
 #if IS_ENABLED(CONFIG_ZMK_BACKLIGHT_AUTO_OFF_IDLE)
 ZMK_SUBSCRIPTION(backlight, zmk_activity_state_changed);
+#endif
+
+#if IS_ENABLED(CONFIG_ZMK_BACKLIGHT_IDLE_OFF_BATTERY_ONLY) &&                                    \
+    !IS_ENABLED(CONFIG_ZMK_BACKLIGHT_AUTO_OFF_USB)
+ZMK_SUBSCRIPTION(backlight, zmk_usb_conn_state_changed);
 #endif
 
 #if IS_ENABLED(CONFIG_ZMK_BACKLIGHT_AUTO_OFF_USB)

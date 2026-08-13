@@ -365,6 +365,14 @@ config ZMK_BACKLIGHT_ON_START
 config ZMK_BACKLIGHT_AUTO_OFF_IDLE
     bool "Turn off backlight when keyboard goes into idle state"
 
+config ZMK_BACKLIGHT_IDLE_OFF_BATTERY_ONLY
+    bool "Only turn off backlight when idle while running on battery"
+    depends on ZMK_BACKLIGHT_AUTO_OFF_IDLE
+    depends on USB_DEVICE_STACK
+    help
+      Keep the backlight on while USB power is present. When running on
+      battery, the normal idle timeout still turns the backlight off.
+
 config ZMK_BACKLIGHT_AUTO_OFF_USB
     bool "Turn off backlight when USB is disconnected"
 

@@ -52,7 +52,7 @@
 
         diode-direction = "col2row";
         // Gaming-oriented debounce: fast press detection, stable release handling.
-        debounce-press-ms = <1>;
+        debounce-press-ms = <2>;
         debounce-release-ms = <5>;
         // Scan every 1 ms while a key is debouncing.
         debounce-scan-period-ms = <1>;
