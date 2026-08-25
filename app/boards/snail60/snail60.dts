@@ -52,8 +52,8 @@
 
         diode-direction = "col2row";
         // Gaming-oriented debounce: fast press detection, stable release handling.
-        debounce-press-ms = <2>;
-        debounce-release-ms = <5>;
+        debounce-press-ms = <10>;
+        debounce-release-ms = <10>;
         // Scan every 1 ms while a key is debouncing.
         debounce-scan-period-ms = <1>;
         row-gpios
@@ -96,7 +96,7 @@
             leds = <&red_led>;
         };
     };
-    
+
     backlight: pwm_leds {
         compatible = "pwm-leds";
         pwm_led_0: pwm_led_0 {
